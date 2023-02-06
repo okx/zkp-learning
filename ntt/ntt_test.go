@@ -49,3 +49,29 @@ func TestIFNTT(t *testing.T) {
 	XN := []int{1, 2, 3, 4, 5, 6, 7, 8}
 	require.Equal(t, INTT(XN), IFNTT(XN))
 }
+
+const benchN = 1 << 15
+
+// time cost: 12016409125ns
+func BenchmarkNTT(b *testing.B) {
+	xn := make([]int, benchN)
+	for i := 0; i < len(xn); i++ {
+		xn[i] = i
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		INTT(NTT(xn))
+	}
+}
+
+// time cost: 1425133167ns
+func BenchmarkFNTT(b *testing.B) {
+	xn := make([]int, benchN)
+	for i := 0; i < len(xn); i++ {
+		xn[i] = i
+	}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		IFNTT(FNTT(xn))
+	}
+}
