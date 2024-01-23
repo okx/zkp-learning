@@ -26,9 +26,16 @@ func TestCreateGN(t *testing.T) {
 }
 
 func TestNTT(t *testing.T) {
-	xn := []int{1, 2, 3, 4, 5, 6, 7, 8}
-	XN := NTT(xn)
-	fmt.Println(XN)
+	const N = 32
+	xn := make([]int, 0, N)
+	for i := 1; i <= N; i++ {
+		xn = append(xn, i)
+	}
+	XN := NTT4Step(xn, 4)
+	fmt.Println("XN:", XN)
+
+	XN2 := NTT4StepOpt(xn, 4)
+	require.Equal(t, XN, XN2)
 	//[36 894301004 346334868 201631260 998244349 796613085 651909477 103943341]
 	require.Equal(t, xn, INTT(XN))
 }
@@ -74,4 +81,19 @@ func BenchmarkFNTT(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		IFNTT(FNTT(xn))
 	}
+}
+
+func TestRearrage(t *testing.T) {
+	xn := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	xn2 := rearrage(xn, 2, 4)
+	fmt.Println(xn2)
+
+	xn3 := transpose(xn2)
+	fmt.Println(xn3)
+}
+
+func TestTransposeInSlice(t *testing.T) {
+	xn := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	xn2 := transposeInSlice(xn, 4)
+	fmt.Println(xn2)
 }
